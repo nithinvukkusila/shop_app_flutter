@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rock_it/screens/product_details_screen.dart';
-import 'package:rock_it/screens/products_overview_screen.dart';
+import '../screens/product_details_screen.dart';
+import '../screens/products_overview_screen.dart';
+import './providers/products.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,21 +10,23 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MyShop',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-            .copyWith(secondary: Colors.deepOrange),
-        fontFamily: 'Lato',
+    return ChangeNotifierProvider(
+      create: (ctx) => Products(),
+      child: MaterialApp(
+        title: 'MyShop',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+              .copyWith(secondary: Colors.deepOrange),
+          fontFamily: 'Lato',
+        ),
+        home: const ProductOverviewScreen(),
+        routes: {
+          ProductDetailsScreen.routeName: (ctx) => const ProductDetailsScreen()
+        },
       ),
-      home: ProductOverviewScreen(),
-      routes: {
-        ProductDetailsScreen.routeName: (ctx) => const ProductDetailsScreen()
-      },
     );
   }
 }
